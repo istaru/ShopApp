@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#146e6e</color>
+    <color name="colorPrimaryDark">#083939</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#4D4D4D</color>
+    <color name="webBg">#F1F1F1</color>
+
+    <color name="appTColor">#FEEF9D</color>
+    <color name="details">#FF6C00</color>
+    <color name="bTransparent">#60000000</color>
+    <color name="detailsW">#fe4f3e</color>
+</resources>

@@ -1,0 +1,146 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
+
+    packagingOptions{
+        exclude'META-INF/DEPENDENCIES.txt'
+        exclude'META-INF/LICENSE.txt'
+        exclude'META-INF/NOTICE.txt'
+        exclude'META-INF/NOTICE'
+        exclude'META-INF/LICENSE'
+        exclude'META-INF/DEPENDENCIES'
+        exclude'META-INF/notice.txt'
+        exclude'META-INF/license.txt'
+        exclude'META-INF/dependencies.txt'
+        exclude'META-INF/LGPL2.1'
+    }
+
+    defaultConfig {
+        applicationId "com.shhb.gd.shop"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 6
+        versionName "1.0.5"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    //执行lint检查，有任何的错误或者警告提示，都将终止构建，我们可以将其关掉
+    lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    buildTypes {
+        debug {
+            try {
+                // 显示Log
+                buildConfigField "boolean", "LOG_DEBUG", "true"
+                versionNameSuffix "-debug"
+                minifyEnabled false
+                zipAlignEnabled false
+                shrinkResources false
+            } catch (ex){
+                throw new InvalidUserDataException(ex.toString())
+            }
+        }
+
+        release {
+            try {
+                // 不显示Log
+                buildConfigField "boolean", "LOG_DEBUG", "false"
+                //Zipalign优化
+                zipAlignEnabled true
+                // 移除无用的resource文件
+                shrinkResources false
+                // 是否进行混淆
+                minifyEnabled true
+                //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            } catch (ex){
+                throw new InvalidUserDataException(ex.toString())
+            }
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("shopApp_debug.jks")
+            storePassword "ii909886"
+            keyAlias "shop_debug"
+            keyPassword "lx19921218"
+        }
+        release {
+            storeFile file("shopApp_release.jks")
+            storePassword "ii909886?"
+            keyAlias "shop"
+            keyPassword "lx19921218?"
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    testCompile 'junit:junit:4.12'
+    //网络请求
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    //透明状态栏
+    compile 'com.jaeger.statusbaruitl:library:1.3.1'
+    //design布局
+    compile 'com.android.support:design:24.2.1'
+    //design的loading效果
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
+    //友盟统计SDK
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    //腾讯X5内核
+    compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
+    //友盟分享SDK
+    compile files('libs/SocialSDK_QQ_Simplify.jar')
+    compile files('libs/SocialSDK_Sina_Simplify.jar')
+    compile files('libs/SocialSDK_WeChat_Simplify.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/umeng_social_shareview.jar')
+    compile files('libs/umeng_social_shareboard.jar')
+    //友盟推送
+    compile project(':UmPush')
+    //高德定位
+    compile files('libs/AMap_Location_V3.1.0_20161027.jar')
+    //阿里巴巴(fastjson)
+    compile 'com.alibaba:fastjson:1.2.9'
+    //阿里巴巴(支付)
+    compile 'com.alibaba.alipay:alipaySingle:20160819@jar'
+    //阿里巴巴(登陆)
+    compile 'com.ali.auth.sdk:alibabauth_core:1.0.9.7@jar'
+    compile 'com.ali.auth.sdk:alibabauth_ui:1.0.9.7@aar'
+    compile 'com.ali.auth.sdk:alibabauth_ext:1.0.9.7@jar'
+    //【可选】仅供特殊合作伙伴使用
+    compile 'com.ali.auth.sdk:alibabauth_accountlink:1.0.9.7@jar'
+    //阿里巴巴(安全基础)
+    compile 'com.taobao.android:securityguardaar3:5.1.81@aar'
+    //【可选】安全高级，如使用了发放红包、优惠券高级功能，则必须引入
+    compile 'com.taobao.android:securitybodyaar3:5.1.20@aar'
+    //阿里巴巴(Mtop网关)
+    compile 'com.taobao.android:mtopsdk_allinone_open:1.2.2.4@jar'
+    //阿里巴巴(applink)
+    compile 'com.taobao.android:alibc_applink:2.0.0.2@jar'
+    //阿里巴巴(UT)
+    compile 'com.taobao.android:utdid4all:1.1.5@jar'
+    compile 'com.alibaba.mtl:app-monitor-sdk:2.5.1_for_bc@aar'
+    //阿里巴巴(电商SDK)
+    compile 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.0.7@aar'
+    //阿里的AndFix热更新
+    compile 'com.alipay.euler:andfix:0.5.0@aar'
+    //爬页面数据
+    compile 'org.jsoup:jsoup:1.10.2'
+}
